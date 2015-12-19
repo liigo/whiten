@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+
+    "name": "Whiten",
+    "description": "Clean DOM elements you right clicks on",
+    "version": "1.0",
+    "author": "Liigo",
+
+    "browser_action": {
+        "default_icon": {
+            "19": "icon19.png",
+            "38": "icon38.png"
+        },
+        "default_title": "Whiten (use right menu on DOM)",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "tabs"
+    ],
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "content_scripts": [{
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["zepto.min.js", "content_script.js"]
+    }]
+}
