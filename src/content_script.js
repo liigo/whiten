@@ -30,6 +30,22 @@ chrome.runtime.onMessage.addListener(
             } else {
                 console.log("[whiten] no element found");
             }
+        } else if (request.cmd_id == "whiten-rm-by-class") {
+            element = document.elementFromPoint(latestMouse.x, latestMouse.y);
+            if (element) {
+                classes = $(element).attr("class").split(" ");
+                for (i=0; i<classes.length; i++) {
+                    elements = $("." + classes[i]);
+                    elements.css("background-color", "red");
+                    elements.animate({
+                        opacity: 0,
+                    }, {
+                        complete: function() {
+                            elements.remove();
+                        }
+                    });
+                }
+            }
         } else if (request.cmd_id == "whiten-hl") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
             if (element) {
@@ -46,6 +62,27 @@ chrome.runtime.onMessage.addListener(
                         });
                     }
                 });
+            }
+        } else if (request.cmd_id == "whiten-hl-by-class") {
+            element = document.elementFromPoint(latestMouse.x, latestMouse.y);
+            if (element) {
+                classes = $(element).attr("class").split(" ");
+                for (i=0; i<classes.length; i++) {
+                    elements = $("." + classes[i]);
+                    var original_color = elements.css("background-color");
+                    var original_border = elements.css("border");
+                    elements.css("border", "3px solid red");
+                    elements.animate({
+                        backgroundColor: "red",
+                    }, {
+                        complete: function() {
+                            $(elements).animate({
+                                backgroundColor: original_color,
+                                border: original_border,
+                            });
+                        }
+                    });
+                } // end for loop
             }
         } else {
             result = "unknown cmd_id: " + request.cmd_id;

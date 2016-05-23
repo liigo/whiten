@@ -3,7 +3,7 @@
 
     "name": "Whiten",
     "description": "Clean DOM elements you right clicks on",
-    "version": "1.0",
+    "version": "1.1",
     "author": "Liigo",
 
     "browser_action": {
@@ -26,7 +26,7 @@
     },
 
     "content_scripts": [{
-        "matches": ["http://*/*", "https://*/*"],
+        "matches": ["http://*/*", "https://*/*", "file:///*/*"],
         "js": ["zepto.min.js", "content_script.js"]
     }]
 }

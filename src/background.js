@@ -16,6 +16,12 @@ chrome.runtime.onInstalled.addListener(function() {
     });
 
     chrome.contextMenus.create({
+        title: 'Remove elements by class',
+        contexts: ['all'],
+        id: 'whiten-rm-by-class',
+    });
+
+    chrome.contextMenus.create({
         type: 'separator',
         contexts: ['all'],
         id: 'sep1',
@@ -25,6 +31,12 @@ chrome.runtime.onInstalled.addListener(function() {
         title: 'Highlight element',
         contexts: ['all'],
         id: 'whiten-hl',
+    });
+    
+    chrome.contextMenus.create({
+        title: 'Highlight elements by class',
+        contexts: ['all'],
+        id: 'whiten-hl-by-class',
     });
 });
 
