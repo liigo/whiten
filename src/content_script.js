@@ -33,7 +33,8 @@ chrome.runtime.onMessage.addListener(
         } else if (request.cmd_id == "whiten-rm-by-class") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
             if (element) {
-                classes = $(element).attr("class").split(" ");
+                classes = $(element).attr("class");
+                classes = (classes == null) ? [] : classes.split(" ");
                 for (i=0; i<classes.length; i++) {
                     elements = $("." + classes[i]);
                     elements.css("background-color", "red");
@@ -66,7 +67,8 @@ chrome.runtime.onMessage.addListener(
         } else if (request.cmd_id == "whiten-hl-by-class") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
             if (element) {
-                classes = $(element).attr("class").split(" ");
+                classes = $(element).attr("class");
+                classes = (classes == null) ? [] : classes.split(" ");
                 for (i=0; i<classes.length; i++) {
                     elements = $("." + classes[i]);
                     var original_color = elements.css("background-color");
