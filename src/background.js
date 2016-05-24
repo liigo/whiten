@@ -1,10 +1,6 @@
-chrome.browserAction.setTitle({
-    title: 'Whiten: clean DOM elements you right clicks on',
-});
-
 chrome.runtime.onInstalled.addListener(function() {
     chrome.contextMenus.create({
-        title: 'Clean background',
+        title: 'Clean up background',
         contexts: ['all'],
         id: 'whiten-bg',
     });

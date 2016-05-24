@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Whiten",
-    "description": "Clean DOM elements you right clicks on",
+    "description": "Clean up DOM elements for you",
     "version": "1.1",
     "author": "Liigo",
 
@@ -11,7 +11,7 @@
             "19": "icon19.png",
             "38": "icon38.png"
         },
-        "default_title": "Whiten (use right menu on DOM)",
+        "default_title": "Whiten: clean up DOM elements for you",
         "default_popup": "popup.html"
     },
     "permissions": [
