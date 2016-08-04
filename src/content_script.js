@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(
             elements.forEach(function(element) {
                 element.style.backgroundColor = "white";
                 element.style.backgroundImage = "url('')";
+                element.style.borderWidth = "thin";
             });
         } else if (request.cmd_id == "whiten-rm") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
