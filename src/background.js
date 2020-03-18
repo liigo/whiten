@@ -18,6 +18,12 @@ chrome.runtime.onInstalled.addListener(function() {
     });
 
     chrome.contextMenus.create({
+        title: 'Remove elements by box',
+        contexts: ['all'],
+        id: 'whiten-rm-by-box',
+    });
+
+    chrome.contextMenus.create({
         type: 'separator',
         contexts: ['all'],
         id: 'sep1',

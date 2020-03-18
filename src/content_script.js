@@ -48,6 +48,34 @@ chrome.runtime.onMessage.addListener(
                     });
                 }
             }
+        } else if (request.cmd_id == "whiten-rm-by-box") {
+            element = document.elementFromPoint(latestMouse.x, latestMouse.y);
+            if (element) {
+                const box = element.getBoundingClientRect();
+                // console.log({id:"element", box:box, el: element});
+                var parent = element.parentElement;
+                var elements = $(element);
+                while (parent) {
+                    const pbox = parent.getBoundingClientRect();
+                    // cann't write as `pbox == box` or `pbox === box`
+                    if (compareBox(pbox, box)) {
+                        elements = elements.add(parent);
+                        parent = parent.parentElement;
+                    } else {
+                        // console.log({id:"parent", box:pbox, el:parent});
+                        break;
+                    }
+                }
+                console.log("[whiten] count of elements in box: " + elements.size());
+                elements.css("background-color", "red");
+                elements.animate({
+                    opacity: 0,
+                }, {
+                    complete: function() {
+                        elements.last().remove();
+                    }
+                });
+            }
         } else if (request.cmd_id == "whiten-hl") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
             if (element) {
@@ -114,6 +142,11 @@ function allElementsFromPoint(x, y) {
     }
     elements.reverse();
     return elements;
+}
+
+function compareBox(box1, box2) {
+    return (box1.x == box2.x && box1.y == box2.y
+         && box1.width == box2.width && box1.height == box2.height);
 }
 
 $(document).on("mousedown", function(event) {

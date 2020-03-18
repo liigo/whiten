@@ -3,7 +3,7 @@
 
     "name": "Whiten",
     "description": "Clean up DOM elements for you",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "author": "Liigo",
 
     "browser_action": {
