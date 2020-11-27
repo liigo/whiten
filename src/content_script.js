@@ -100,8 +100,8 @@ chrome.runtime.onMessage.addListener(
                 classes = (classes == null) ? [] : classes.split(" ");
                 for (i=0; i<classes.length; i++) {
                     elements = $("." + classes[i]);
-                    var original_color = elements.css("background-color");
-                    var original_border = elements.css("border");
+                    let original_color = elements.css("background-color");
+                    let original_border = elements.css("border");
                     elements.css("border", "3px solid red");
                     elements.animate({
                         backgroundColor: "red",
@@ -116,13 +116,52 @@ chrome.runtime.onMessage.addListener(
                 } // end for loop
             }
         } else {
-            result = "unknown cmd_id: " + request.cmd_id;
+            if (!handle_others(request, sender, sendResponse))
+                result = "unknown cmd_id: " + request.cmd_id;
         }
 
         sendResponse({
             result: result,
         });
+    }
+);
+
+function handle_others(request, sender, sendResponse) {
+    if (request.cmd_id == "whiten-rm-rust-internals-hdr") {
+        removeElementsByClass("d-header");
+    } else if (request.cmd_id == "whiten-rm-zhihu-hdr") {
+        removeElementsByClass("Sticky"); // AppHeader
+    } else {
+        return false;
+    }
+    return true;
+}
+
+function removeElementsByClass(class_name) {
+    let elements = $("." + class_name);
+    console.info("class:" + class_name);
+    console.info(elements);
+    removeZeptoElements(elements);
+}
+
+function removeZeptoElements(zepto_elements) {
+    if (!zepto_elements) {
+        console.log("[whiten] no elements to remove");
+        return;
+    }
+    zepto_elements.css("background-color", "red");
+    zepto_elements.animate({
+        opacity: 0,
+    }, {
+        complete: function() {
+            zepto_elements.remove();
+        }
     });
+}
+
+function removeJsElement(element) {
+    removeElement($(element));
+}
 
 // http://stackoverflow.com/a/27884653
 function allElementsFromPoint(x, y) {

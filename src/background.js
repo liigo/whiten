@@ -23,6 +23,28 @@ chrome.runtime.onInstalled.addListener(function() {
         id: 'whiten-rm-by-box',
     });
 
+    let others_menu = chrome.contextMenus.create({
+        title: 'Others ...',
+        contexts: ['all'],
+        id: 'whiten-others',
+    });
+
+    chrome.contextMenus.create({
+        title: 'Remove rust-internals header',
+        contexts: ['all'],
+        id: 'whiten-rm-rust-internals-hdr',
+        parentId : others_menu,
+    });
+
+    chrome.contextMenus.create({
+        title: 'Remove zhihu.com header',
+        contexts: ['all'],
+        id: 'whiten-rm-zhihu-hdr',
+        parentId : others_menu,
+    });
+
+    // -------------------
+
     chrome.contextMenus.create({
         type: 'separator',
         contexts: ['all'],
