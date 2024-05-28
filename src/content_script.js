@@ -34,6 +34,15 @@ chrome.runtime.onMessage.addListener(
         } else if (request.cmd_id == "whiten-rm-by-class") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
             if (element) {
+                // 20240528: if the element has no classes, we try its parent.
+                // to support github users avatar image:
+                //   <a class="TimelineItem-avatar avatar circle lh-0 Link"><img /></a>
+                classes = $(element).attr("class");
+                if (classes === null || classes === "") {
+                    element = element.parentElement;
+                }
+            }
+            if (element) {
                 classes = $(element).attr("class");
                 classes = (classes == null) ? [] : classes.split(" ");
                 for (i=0; i<classes.length; i++) {
@@ -95,6 +104,15 @@ chrome.runtime.onMessage.addListener(
             }
         } else if (request.cmd_id == "whiten-hl-by-class") {
             element = document.elementFromPoint(latestMouse.x, latestMouse.y);
+            if (element) {
+                // 20240528: if the element has no classes, we try its parent.
+                // to support github users avatar image:
+                //   <a class="TimelineItem-avatar avatar circle lh-0 Link"><img /></a>
+                classes = $(element).attr("class");
+                if (classes === null || classes === "") {
+                    element = element.parentElement;
+                }
+            }
             if (element) {
                 classes = $(element).attr("class");
                 classes = (classes == null) ? [] : classes.split(" ");
