@@ -83,11 +83,30 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
     chrome.tabs.query({
         active: true,
         currentWindow: true,
-    }, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-            cmd_id: info.menuItemId,
-        }, function(response) {
-            console.log(response.result);
-        });
+    }, ([tab]) => {
+        if (info.menuItemId === "whiten-urlprefix") {
+            // liigo: 20241016: reload with urlprefix (e.g. hiany)
+            // 根据使用场景，当前页面大概率没有加载成功(unreachable)，content_script.js尚未生效，
+            // 因而此命令只能在background.js内处理。
+            let url = tab.pendingUrl || tab.url;
+            let urlprefix;
+            chrome.storage.sync.get(["urlprefix"], (result) => {
+                urlprefix = result.urlprefix;
+                console.log("[whiten] load urlprefix:", urlprefix);
+                if (urlprefix && urlprefix.trim() !== "")
+                    url = `${urlprefix}/${url}`;
+                else
+                    url = "https://unknown-urlprefix-option/" + url;
+                console.log("[whiten] new url:", url);
+                chrome.tabs.update(tab.id, {url}); // reload new url
+            });
+        } else {
+            // will process these commands in content_script.js
+            chrome.tabs.sendMessage(tab.id, {
+                cmd_id: info.menuItemId,
+            }, function(response) {
+                console.log(response.result);
+            });
+        }
     });
 });
