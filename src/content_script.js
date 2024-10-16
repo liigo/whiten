@@ -133,6 +133,17 @@ chrome.runtime.onMessage.addListener(
                     });
                 } // end for loop
             }
+        } else if (request.cmd_id == "whiten-urlprefix") {
+            // liigo: 20241016: reload with urlprefix
+            let urlprefix;
+            chrome.storage.sync.get(["urlprefix"], (result) => {
+                urlprefix = result.urlprefix;
+                console.log("[whiten] load urlprefix:", urlprefix);
+                if (urlprefix && urlprefix.trim() !== "")
+                    window.location = `${urlprefix}/${window.location}`;
+                else
+                    window.location = "https://unknown-urlprefix-option/" + window.location;
+            });
         } else {
             if (!handle_others(request, sender, sendResponse))
                 result = "unknown cmd_id: " + request.cmd_id;

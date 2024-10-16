@@ -3,7 +3,7 @@
 
     "name": "Whiten",
     "description": "Clean up DOM elements for you",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "author": "Liigo",
 
     "browser_action": {
@@ -18,7 +18,8 @@
     "permissions": [
         "activeTab",
         "contextMenus",
-        "tabs"
+        "tabs",
+        "storage"
     ],
 
     "icons": {
@@ -33,5 +34,7 @@
     "content_scripts": [{
         "matches": ["http://*/*", "https://*/*", "file:///*/*"],
         "js": ["zepto.min.js", "content_script.js"]
-    }]
+    }],
+
+    "options_page": "options.html"
 }

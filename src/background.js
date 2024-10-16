@@ -62,6 +62,20 @@ chrome.runtime.onInstalled.addListener(function() {
         contexts: ['all'],
         id: 'whiten-hl-by-class',
     });
+
+    // -------------------
+
+    chrome.contextMenus.create({
+        type: 'separator',
+        contexts: ['all'],
+        id: 'sep2',
+    });
+
+    chrome.contextMenus.create({
+        title: 'Reload with urlprefix',
+        contexts: ['all'],
+        id: 'whiten-urlprefix',
+    });
 });
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
