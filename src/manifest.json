@@ -3,7 +3,7 @@
 
     "name": "Whiten",
     "description": "Clean up DOM elements for you",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "author": "Liigo",
 
     "action": {
@@ -36,5 +36,14 @@
         "js": ["zepto.min.js", "content_script.js"]
     }],
 
-    "options_page": "options.html"
+    "options_page": "options.html",
+
+    "commands": {
+        "reload-with-urlprefix": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+X"
+            },
+            "description": "Reload with urlprefix"
+        }
+    }
 }

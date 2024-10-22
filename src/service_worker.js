@@ -85,21 +85,7 @@ chrome.contextMenus.onClicked.addListener(function(info, _tab) {
         currentWindow: true,
     }, ([tab]) => {
         if (info.menuItemId === "whiten-urlprefix") {
-            // liigo: 20241016: reload with urlprefix (e.g. hiany)
-            // 根据使用场景，当前页面大概率没有加载成功(unreachable)，content_script.js尚未生效，
-            // 因而此命令只能在background.js内处理。
-            let url = tab.pendingUrl || tab.url;
-            let urlprefix;
-            chrome.storage.sync.get(["urlprefix"], (result) => {
-                urlprefix = result.urlprefix;
-                console.log("[whiten] load urlprefix:", urlprefix);
-                if (urlprefix && urlprefix.trim() !== "")
-                    url = `${urlprefix}/${url}`;
-                else
-                    url = "https://unknown-urlprefix-option/" + url;
-                console.log("[whiten] new url:", url);
-                chrome.tabs.update(tab.id, {url}); // reload new url
-            });
+            reloadWithUrlPrefix(tab);
         } else {
             // will process these commands in content_script.js
             chrome.tabs.sendMessage(tab.id, {
@@ -110,3 +96,35 @@ chrome.contextMenus.onClicked.addListener(function(info, _tab) {
         }
     });
 });
+
+// liigo: 20241022: see "commands" in manifest.json
+chrome.commands.onCommand.addListener((cmd) => {
+    console.log("on command:", cmd);
+    // query active tab, and send message to avtive tab
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+    }, ([tab]) => {
+        if (cmd === "reload-with-urlprefix") {
+            reloadWithUrlPrefix(tab);
+        }
+    });
+});
+
+// liigo: 20241016: reload with urlprefix (e.g. hiany)
+// 根据使用场景，当前页面大概率没有加载成功(unreachable)，content_script.js尚未生效，
+// 因而此命令只能在background.js内处理。
+function reloadWithUrlPrefix(tab) {
+    let url = tab.pendingUrl || tab.url;
+    let urlprefix;
+    chrome.storage.sync.get(["urlprefix"], (result) => {
+        urlprefix = result.urlprefix;
+        console.log("[whiten] load urlprefix:", urlprefix);
+        if (urlprefix && urlprefix.trim() !== "")
+            url = `${urlprefix}/${url}`;
+        else
+            url = "https://unknown-urlprefix-option/" + url;
+        console.log("[whiten] new url:", url);
+        chrome.tabs.update(tab.id, {url}); // reload new url
+    });
+}
